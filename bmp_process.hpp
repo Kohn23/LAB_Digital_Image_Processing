@@ -40,5 +40,5 @@ public:
 private:
     BMPHeader header;
     BMPInfoHeader infoHeader;
-    std::vector<unsigned char> imageData;
+    std::vector<unsigned char> imageData; // 每个像素 3 字节，一个字节可以用unsigned char存储
 };

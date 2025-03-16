@@ -2,34 +2,51 @@
 
 // 读取图像
 void BMPProcessor::readImage(const std::string& filePath) {
-    // 打开输入文件
-    std::ifstream inputFile(filePath, std::ios::binary);
-    if (!inputFile) {
-        std::cerr << "无法打开输入文件！" << std::endl;
-        return;
+    try {
+        // 打开输入文件
+        std::ifstream inputFile(filePath, std::ios::binary);
+        if (!inputFile) {
+            throw std::runtime_error("无法打开输入文件：" + filePath);
+        }
+
+        // 读取 BMP 文件头
+        inputFile.read(reinterpret_cast<char*>(&header), sizeof(BMPHeader)); // read成员函数需要传入char*类型的指针, 所以需要强制类型转换
+        if (!inputFile) {
+            throw std::runtime_error("读取 BMP 文件头失败");
+        }
+
+        // 读取 BMP 信息头
+        inputFile.read(reinterpret_cast<char*>(&infoHeader), sizeof(BMPInfoHeader));
+        if (!inputFile) {
+            throw std::runtime_error("读取 BMP 信息头失败");
+        }
+
+        // 检查是否是 24 位 BMP 文件
+        if (infoHeader.bitCount != 24) {
+            throw std::runtime_error("仅支持 24 位 BMP 文件");
+        }
+
+        // 计算图像数据的大小
+        size_t dataSize = infoHeader.imageSize;
+        if (dataSize == 0) {
+            dataSize = infoHeader.width * infoHeader.height * 3;
+        }
+
+        // 读取图像数据
+        imageData.resize(dataSize);
+        inputFile.read(reinterpret_cast<char*>(imageData.data()), dataSize);
+        if (!inputFile) {
+            throw std::runtime_error("读取图像数据失败");
+        }
     }
-
-    // 读取 BMP 文件头
-    inputFile.read(reinterpret_cast<char*>(&header), sizeof(BMPHeader));
-
-    // 读取 BMP 信息头
-    inputFile.read(reinterpret_cast<char*>(&infoHeader), sizeof(BMPInfoHeader));
-
-    // 检查是否是 24 位 BMP 文件
-    if (infoHeader.bitCount != 24) {
-        std::cerr << "仅支持 24 位 BMP 文件！" << std::endl;
-        return;
+    // 捕获异常
+    catch (const std::exception& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        // 清理已分配的资源
+        imageData.clear();
+        header = BMPHeader();
+        infoHeader = BMPInfoHeader();
     }
-
-    // 计算图像数据的大小
-    size_t dataSize = infoHeader.imageSize;
-    if (dataSize == 0) {
-        dataSize = infoHeader.width * infoHeader.height * 3; // 24 位图像，每个像素 3 字节
-    }
-
-    // 读取图像数据
-    imageData.resize(dataSize);
-    inputFile.read(reinterpret_cast<char*>(imageData.data()), dataSize);
 }
 
 // 处理图像

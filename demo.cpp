@@ -1,5 +1,4 @@
-#include"bmp_process.cpp"
-#include"GrayScale.cpp"
+#include "bmp_process.hpp"
 
 int main() {
     std::string inputFilePath = "image/image1.bmp";         // 输入文件路径
