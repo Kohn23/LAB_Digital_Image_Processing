@@ -1,13 +1,17 @@
-#include "bmp_process.hpp"
+#include "Image.hpp"
 
 int main() {
-    std::string inputFilePath = "image/image1.bmp";         // 输入文件路径
-    std::string outputFilePath = "image/grayscale_result.bmp";  // 输出文件路径
-
-    ImageProcessor* processor = new BMPProcessor();
-    processor->readImage(inputFilePath);                    // 读取图像
-    processor->processImage(new GrayScale());               // 处理图像
-    processor->saveImage(outputFilePath);                   // 保存图像
-
+    try
+    {
+        Image* bmp = new BMP();
+        bmp->readImage("image/exp1_colored.bmp");                   // 读取图像
+        bmp->processImage(new GrayScale());               // 处理图像
+        bmp->saveImage("image/grayscale_result.bmp");     // 保存图像
+    }
+    catch(const std::exception& e)
+    {
+        // 输出异常信息
+        std::cerr << e.what() << '\n';
+    }
     return 0;
 }

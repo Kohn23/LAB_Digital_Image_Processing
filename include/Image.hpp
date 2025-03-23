@@ -1,6 +1,23 @@
 #pragma once
-#include "image_process.hpp"
+#include "Algorithm.hpp"
+#include <iostream>
+#include <fstream>
 
+
+// Image 接口
+class Image {
+public:
+    virtual ~Image() = default;
+    virtual void readImage(const std::string& filePath) = 0;
+    virtual void processImage(Algorithm* algorithm) = 0;
+    virtual void saveImage(const std::string& filePath) = 0;
+    virtual std::string getFilePath() const { return filePath; }
+
+protected:
+    std::string filePath;
+};
+
+// BMP 图像
 // BMP 头部结构体
 #pragma pack(push, 1)          // 以 1 字节对齐
 struct BMPHeader {
@@ -25,13 +42,11 @@ struct BMPInfoHeader {
 };
 #pragma pack(pop)              // 恢复默认对齐方式
 
-
-
-// BMP 图像处理器
-class BMPProcessor : public ImageProcessor {
+// BMP 类
+class BMP : public Image {
 public:
-    BMPProcessor() = default;
-    ~BMPProcessor() override = default;
+    BMP() = default;
+    ~BMP() override = default;
 
     virtual void readImage(const std::string& filePath) override;
     virtual void processImage(Algorithm* algorithm) override;

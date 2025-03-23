@@ -1,8 +1,14 @@
-#include "bmp_process.hpp"
+#include "Image.hpp"
 
 // 读取图像
-void BMPProcessor::readImage(const std::string& filePath) {
+void BMP::readImage(const std::string& filePath) {
     try {
+        // 清理已分配的资源
+        imageData.clear();
+        header = BMPHeader();
+        infoHeader = BMPInfoHeader();
+        this->filePath.clear();
+
         // 打开输入文件
         std::ifstream inputFile(filePath, std::ios::binary);
         if (!inputFile) {
@@ -38,38 +44,45 @@ void BMPProcessor::readImage(const std::string& filePath) {
         if (!inputFile) {
             throw std::runtime_error("读取图像数据失败");
         }
+
+        // 记录处理文件路径
+        this->filePath = filePath;
     }
-    // 捕获异常
+    // 捕获并立即处理异常
     catch (const std::exception& e) {
-        std::cerr << "ERROR: " << e.what() << std::endl;
         // 清理已分配的资源
         imageData.clear();
         header = BMPHeader();
         infoHeader = BMPInfoHeader();
+        this->filePath.clear();
+        // 抛出异常
+        throw;
     }
 }
 
 // 处理图像
-void BMPProcessor::processImage(Algorithm* algorithm) {
+void BMP::processImage(Algorithm* algorithm) {
     // 调用算法处理图像
     (*algorithm)(imageData, infoHeader.width, infoHeader.height);
     std::cout << "图像已处理：" << algorithm->getName() << std::endl;
 }
 
 // 保存图像
-void BMPProcessor::saveImage(const std::string& filePath) {
+void BMP::saveImage(const std::string& filePath) {
     // 打开输出文件
     std::ofstream outputFile(filePath, std::ios::binary);
     if (!outputFile) {
-        std::cerr << "无法打开输出文件！" << std::endl;
-        return;
+        throw std::runtime_error("无法打开输出文件：" + filePath);
     }
 
     // 写入文件头和信息头
     outputFile.write(reinterpret_cast<const char*>(&header), sizeof(BMPHeader));
     outputFile.write(reinterpret_cast<const char*>(&infoHeader), sizeof(BMPInfoHeader));
 
-    // 写入灰度图像数据
+    // 写入图像数据
+    if (imageData.empty()) {
+        throw std::runtime_error("图像数据为空，无法保存！");
+    }
     outputFile.write(reinterpret_cast<const char*>(imageData.data()), imageData.size());
-    std::cout << "灰度图像已保存到 " << filePath << std::endl;
+    std::cout << "图像已保存：" << filePath << std::endl;
 }
