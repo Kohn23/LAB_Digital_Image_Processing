@@ -1,16 +1,14 @@
 #pragma once
 #include <vector>
 #include <stdexcept>
+#include "Distribution.hpp"
 
 // 算法接口
 class Algorithm {
 public:
     virtual ~Algorithm() = default;
     
-    // 运算符重载，对图像数据进行处理
-    virtual void operator()(std::vector<unsigned char>& imageData, int width, int height) {
-        throw std::runtime_error("Not implemented!");
-    }; 
+    virtual void operator()(std::vector<unsigned char>& imageData) = 0; // 纯虚函数
     
     // 获取算法名称
     virtual const char* getName() const = 0;
@@ -19,9 +17,23 @@ public:
 // RGB转灰度算法
 class GrayScale : public Algorithm {
 public:
-    void operator()(std::vector<unsigned char>& imageData, int width, int height) override; 
+    void operator()(std::vector<unsigned char>& imageData) override; 
 
     const char* getName() const override {
         return "GrayScale";
     }
+};
+
+// 直方图均衡化算法
+class HistogramEqual : public Algorithm {
+public:
+    HistogramEqual(bool isGray = false) : isGray(isGray) {}
+    void operator()(std::vector<unsigned char>& imageData) override; 
+
+    const char* getName() const override {
+        return "HistogramEqual";
+    }
+
+private:
+    bool isGray = false;
 };

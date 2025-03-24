@@ -63,7 +63,7 @@ void BMP::readImage(const std::string& filePath) {
 // 处理图像
 void BMP::processImage(Algorithm* algorithm) {
     // 调用算法处理图像
-    (*algorithm)(imageData, infoHeader.width, infoHeader.height);
+    (*algorithm)(imageData);
     std::cout << "图像已处理：" << algorithm->getName() << std::endl;
 }
 
