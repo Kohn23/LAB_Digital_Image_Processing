@@ -5,6 +5,7 @@ int main() {
     {
         Image* bmp = new BMP();
         bmp->readImage("img/exp2_haze.bmp");       // 读取图像
+        bmp->processImage(new GrayScale());        // 处理图像
         bmp->processImage(new HistogramEqual());      // 处理图像
         bmp->saveImage("img/exp2_haze_result.bmp");  // 保存图像
     }

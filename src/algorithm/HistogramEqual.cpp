@@ -1,11 +1,6 @@
 #include "Algorithm.hpp"
 
 void HistogramEqual::operator()(std::vector<unsigned char>& imageData) {
-    // 转换为灰度图像
-    if (!isGray) {
-        GrayScale grayScale;
-        grayScale(imageData);
-    }
     // 计算直方图
     Histogram histogram(imageData);
     // 计算累积直方图

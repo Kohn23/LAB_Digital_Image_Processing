@@ -47,6 +47,8 @@ void BMP::readImage(const std::string& filePath) {
 
         // 记录处理文件路径
         this->filePath = filePath;
+        // 设置图像状态为 RGB
+        imageState = ImageState::RGB;
     }
     // 捕获并立即处理异常
     catch (const std::exception& e) {
@@ -62,9 +64,30 @@ void BMP::readImage(const std::string& filePath) {
 
 // 处理图像
 void BMP::processImage(Algorithm* algorithm) {
-    // 调用算法处理图像
-    (*algorithm)(imageData);
-    std::cout << "图像已处理：" << algorithm->getName() << std::endl;
+    try {
+        // 检查算法的输入状态要求
+        if (algorithm->getInputState() != imageState) {
+            throw std::runtime_error(
+                std::string("算法 ") + 
+                std::string(algorithm->getName()) +
+                std::string(" 需要的状态为 ") +
+                ImageStateToString(algorithm->getInputState()) +
+                std::string("，但当前图片状态为 ") + 
+                ImageStateToString(imageState)
+            );
+        }
+
+        // 调用算法处理图像
+        (*algorithm)(imageData);
+        
+        // 更新图像状态
+        setState(algorithm->getOutputState());
+        
+        std::cout << "图像已处理：" << algorithm->getName() << std::endl;
+    }
+    catch (const std::exception& e) {
+        throw;
+    }
 }
 
 // 保存图像

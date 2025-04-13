@@ -1,5 +1,6 @@
 #pragma once
 #include "Algorithm.hpp"
+#include "ImageState.hpp"
 #include <iostream>
 #include <fstream>
 
@@ -11,10 +12,15 @@ public:
     virtual void readImage(const std::string& filePath) = 0;
     virtual void processImage(Algorithm* algorithm) = 0;
     virtual void saveImage(const std::string& filePath) = 0;
-    virtual std::string getFilePath() const { return filePath; }
+    
+    // 获取状态信息
+    std::string getFilePath() const { return filePath; }
+    ImageState getImageState() const { return imageState; }
+    void setState(ImageState state) { imageState = state; }
 
 protected:
     std::string filePath;
+    ImageState imageState = ImageState::UNKNOWN; // 图像状态
 };
 
 // BMP 图像
