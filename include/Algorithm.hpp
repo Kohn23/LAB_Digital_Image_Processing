@@ -3,13 +3,14 @@
 #include <stdexcept>
 #include "Distribution.hpp"
 #include "ImageState.hpp"
+#include "Filter.hpp"
 
 // 算法接口
 class Algorithm {
 public:
     virtual ~Algorithm() = default;
     // 处理图像数据
-    virtual void operator()(std::vector<unsigned char>& imageData) = 0;
+    virtual void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) = 0;
     // 获取算法名称
     virtual const char* getName() const = 0;
     // 获取算法的输入状态要求
@@ -21,7 +22,7 @@ public:
 // RGB转灰度算法
 class GrayScale : public Algorithm {
 public:
-    void operator()(std::vector<unsigned char>& imageData) override;
+    void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
 
     ImageState getInputState() const override { return ImageState::RGB; }
     ImageState getOutputState() const override { return ImageState::GRAY; }
@@ -31,9 +32,15 @@ public:
 // 直方图均衡化算法
 class HistogramEqual : public Algorithm {
 public:
-    void operator()(std::vector<unsigned char>& imageData) override; 
+    void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override; 
 
     const char* getName() const override { return "HistogramEqual";}
     ImageState getInputState() const override { return ImageState::GRAY; }
     ImageState getOutputState() const override { return ImageState::GRAY; }
+};
+
+// 卷积运算
+class Convolution{
+public:
+    std::vector<unsigned char> operator()(std::vector<unsigned char>& imageData, size_t width, size_t height, Filter& filter);
 };

@@ -78,7 +78,7 @@ void BMP::processImage(Algorithm* algorithm) {
         }
 
         // 调用算法处理图像
-        (*algorithm)(imageData);
+        (*algorithm)(imageData, infoHeader.width, infoHeader.height);
         
         // 更新图像状态
         setState(algorithm->getOutputState());

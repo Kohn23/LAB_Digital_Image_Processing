@@ -1,6 +1,6 @@
 #include"Algorithm.hpp"
 
-void GrayScale::operator()(std::vector<unsigned char>& imageData) {
+void GrayScale::operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) {
     // 转换为灰度图像
     for (size_t i = 0; i < imageData.size(); i += 3) {
         unsigned char r = imageData[i];

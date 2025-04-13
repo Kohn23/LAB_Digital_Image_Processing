@@ -1,6 +1,6 @@
 #include "Algorithm.hpp"
 
-void HistogramEqual::operator()(std::vector<unsigned char>& imageData) {
+void HistogramEqual::operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) {
     // 计算直方图
     Histogram histogram(imageData);
     // 计算累积直方图
