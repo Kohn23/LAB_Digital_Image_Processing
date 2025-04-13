@@ -9,11 +9,15 @@ public:
     virtual ~Distribution() = default;
 
     // 处理数据
-    virtual void normalize() {for (int i = 0; i < data.size(); ++i) {data[i] = data[i] / totalCount;}};
+    virtual void normalize() {for (size_t i = 0; i < data.size(); ++i) {data[i] = data[i] / totalCount;}};
 
     // 获取数据
     virtual const std::vector<float>& getData() const { return data; }
     virtual int getCount() const { return totalCount; }
+
+    // 存储为txt文件
+    
+
 
 protected:
     std::vector<float> data;

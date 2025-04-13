@@ -8,7 +8,7 @@ CDF::CDF(const Distribution& other, int size) : Distribution(size) {
     auto otherData = other.getData();
     data[0] = otherData[0];
     totalCount = data[0];
-    for (int i = 1; i < data.size(); ++i) {
+    for (size_t i = 1; i < data.size(); ++i) {
         data[i] = data[i-1] + otherData[i];
     }
     totalCount = data[255];

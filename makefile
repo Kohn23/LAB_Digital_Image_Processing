@@ -1,40 +1,44 @@
 # 编译器及编译选项
 CXX := g++
-CXXFLAGS := -g -I./include
+CXXFLAGS := -g -I./include -Wall
 
 # 目标可执行文件名及路径
 TARGET := bin/demo.exe
 
-# 源文件列表（src目录下的源文件和根目录下的demo.cpp）
-SRCS := $(wildcard src/*.cpp) demo.cpp
+# 源文件目录和目标文件目录
+SRC_DIR := src
+BIN_DIR := bin
 
-# 生成对应的.o文件列表（路径在bin目录下）
-OBJS := $(addprefix bin/,$(notdir $(SRCS:.cpp=.o)))
+# 获取所有源文件（包含子目录）
+SRCS := $(wildcard $(SRC_DIR)/*/*.cpp) demo.cpp
 
-# 头文件列表（include目录下的头文件）
+# 生成扁平化目标文件名（去除子目录路径）
+OBJS := $(addprefix $(BIN_DIR)/, $(notdir $(SRCS:.cpp=.o)))
+
+# 获取头文件
 HEADERS := $(wildcard include/*.hpp)
 
-# 默认目标：编译整个项目
-all: bin $(TARGET)
+# 默认目标
+all: $(BIN_DIR) $(TARGET)
 
 # 创建bin目录
-bin:
-	mkdir -p bin
+$(BIN_DIR):
+	@mkdir -p $@
 
-# 链接
+# 链接可执行文件
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# 编译src目录下的源文件
-bin/%.o: src/%.cpp $(HEADERS)
+# 编译规则（处理子目录源文件）
+$(BIN_DIR)/%.o: $(SRC_DIR)/*/%.cpp $(HEADERS) | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# 编译根目录下的demo.cpp
-bin/demo.o: demo.cpp $(HEADERS)
+# 特殊处理demo.cpp
+$(BIN_DIR)/demo.o: demo.cpp $(HEADERS) | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# 清理生成的文件
+# 清理
 clean:
-	rm -rf bin/*.o $(TARGET)
+	rm -rf $(BIN_DIR)/*.o $(TARGET)
 
 .PHONY: all clean
