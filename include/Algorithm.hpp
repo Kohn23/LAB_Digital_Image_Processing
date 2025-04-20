@@ -39,8 +39,24 @@ public:
     ImageState getOutputState() const override { return ImageState::GRAY; }
 };
 
-// 卷积运算
-class Convolution{
+// 填边
+class Padding{
 public:
-    std::vector<unsigned char> operator()(std::vector<unsigned char>& imageData, size_t width, size_t height, Filter& filter);
+    void operator()(const std::vector<unsigned char>& inputPlane, std::vector<unsigned char>& outputPlane, size_t inputWidth, size_t inputHeight, int padWidth, int padHeight);
+};
+
+// 卷积
+class Convol2d{
+public:
+    void operator()(const std::vector<unsigned char>& inputPlane, std::vector<unsigned char>& outputPlane, size_t inputWidth, size_t inputHeight, Filter& filter);
+};
+
+// 平滑滤波
+class SmoothingFilter : public Algorithm {
+public:
+    void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
+
+    const char* getName() const override { return "SmoothingFilter";}
+    ImageState getInputState() const override { return ImageState::ANY; }
+    ImageState getOutputState() const override { return ImageState::ANY; }
 };

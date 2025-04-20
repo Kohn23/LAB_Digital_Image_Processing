@@ -15,10 +15,6 @@ public:
     virtual const std::vector<float>& getData() const { return data; }
     virtual int getCount() const { return totalCount; }
 
-    // 存储为txt文件
-    
-
-
 protected:
     std::vector<float> data;
     int totalCount;

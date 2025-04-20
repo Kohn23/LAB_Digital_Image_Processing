@@ -66,7 +66,7 @@ void BMP::readImage(const std::string& filePath) {
 void BMP::processImage(Algorithm* algorithm) {
     try {
         // 检查算法的输入状态要求
-        if (algorithm->getInputState() != imageState) {
+        if (algorithm->getInputState() != imageState && algorithm->getInputState() != ImageState::ANY) {
             throw std::runtime_error(
                 std::string("算法 ") + 
                 std::string(algorithm->getName()) +
@@ -81,7 +81,9 @@ void BMP::processImage(Algorithm* algorithm) {
         (*algorithm)(imageData, infoHeader.width, infoHeader.height);
         
         // 更新图像状态
-        setState(algorithm->getOutputState());
+        if (algorithm->getOutputState() != ImageState::ANY) {
+            imageState = algorithm->getOutputState();
+        }
         
         std::cout << "图像已处理：" << algorithm->getName() << std::endl;
     }

@@ -8,6 +8,7 @@ enum class ImageState {
     UNKNOWN,    // 未知状态
     RGB,        // RGB彩色图像
     GRAY,       // 灰度图像
+    ANY,        // 任意状态
 };
 
 // 头文件中使用内联函数
@@ -16,6 +17,7 @@ inline std::string ImageStateToString(ImageState state) {
         case ImageState::UNKNOWN: return "UNKNOWN";
         case ImageState::RGB: return "RGB";
         case ImageState::GRAY: return "GRAY";
+        case ImageState::ANY: return "ANY";
         default: return "INVALID STATE";
     }
 }

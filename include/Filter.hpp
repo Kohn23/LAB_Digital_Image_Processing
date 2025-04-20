@@ -14,10 +14,11 @@ public:
 
     // 获取滤波核的值
     const std::vector<float>& getKernel() const { return kernel; }
+
 protected:
-    int width;  // 滤波核的宽度
-    int height; // 滤波核的高度
-    std::vector<float> kernel; // 滤波核的值
+    int width;                      // 滤波核的宽度
+    int height;                     // 滤波核的高度
+    std::vector<float> kernel;      // 滤波核的值
 };
 
 // 平滑滤波器
