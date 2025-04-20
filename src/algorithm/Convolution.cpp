@@ -20,12 +20,13 @@ void Convol2d::operator()(
             float sum = 0.0f;
             for (int ky = -cutHeight; ky <= cutHeight; ++ky) {
                 for (int kx = -cutWidth; kx <= cutWidth; ++kx) {
-                    sum += inputPlane[(y + ky) * inputWidth + (x + kx)] * filter.getKernel()[(ky + cutHeight) * kernelWidth + (kx + cutWidth)];
+                    sum += inputPlane[(y - ky) * inputWidth + (x - kx)] * filter.getKernel()[(ky + cutHeight) * kernelWidth + (kx + cutWidth)];
                 }
             }
             outputPlane[(y - cutHeight) * outputWidth + (x - cutWidth)] = static_cast<unsigned char>(sum);
         }
     }
+
 }
 
 void ConvolChannels::operator()(

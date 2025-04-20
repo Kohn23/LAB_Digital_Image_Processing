@@ -46,7 +46,9 @@ public:
     LaplacianFilter(int width=3, int height=3) : Filter(width, height) {
         // 初始化滤波核
         kernel = {
-            -1, -1, -1, -1, 8, -1, -1, -1, -1
+            -1.0, -1.0, -1.0, 
+            -1.0, 8.0, -1.0, 
+            -1.0, -1.0, -1.0
         };
     }
 };
