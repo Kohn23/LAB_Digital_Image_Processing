@@ -4,9 +4,9 @@ int main() {
     try
     {
         Image* bmp = new BMP();
-        bmp->readImage("img/exp2_haze.bmp");       // 读取图像
-        bmp->processImage(new SmoothingFilter()); // 处理图像
-        bmp->saveImage("img/smoothing_test.bmp");  // 保存图像
+        bmp->readImage("img/exp3_smoothing.bmp");       // 读取图像
+        bmp->processImage(new BoxSmoothing()); // 处理图像
+        bmp->saveImage("img/exp3_box_smoothing.bmp");  // 保存图像
     }
     catch(const std::exception& e)
     {

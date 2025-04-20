@@ -51,12 +51,27 @@ public:
     void operator()(const std::vector<unsigned char>& inputPlane, std::vector<unsigned char>& outputPlane, size_t inputWidth, size_t inputHeight, Filter& filter);
 };
 
+class ConvolChannels{
+public:
+    void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height, int channels, Filter& filter);
+};
+
 // 平滑滤波
-class SmoothingFilter : public Algorithm {
+class BoxSmoothing : public Algorithm {
 public:
     void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
 
     const char* getName() const override { return "SmoothingFilter";}
+    ImageState getInputState() const override { return ImageState::ANY; }
+    ImageState getOutputState() const override { return ImageState::ANY; }
+};
+
+// 高斯滤波
+class GaussianSmoothing : public Algorithm {
+public:
+    void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
+
+    const char* getName() const override { return "GaussianSmoothing";}
     ImageState getInputState() const override { return ImageState::ANY; }
     ImageState getOutputState() const override { return ImageState::ANY; }
 };

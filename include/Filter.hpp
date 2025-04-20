@@ -1,5 +1,6 @@
 #pragma once 
 #include <vector>
+#include <cmath>
 // 滤波核
 class Filter {
 public:
@@ -21,7 +22,7 @@ protected:
     std::vector<float> kernel;      // 滤波核的值
 };
 
-// 平滑滤波器
+// 盒式平滑滤波器
 class BoxFilter : public Filter {
 public:
     BoxFilter(int width, int height): Filter(width, height) {
@@ -30,4 +31,11 @@ public:
             kernel[i] = 1.0f / (width * height);
         }
     }
+};
+
+// 高斯滤波器
+// 需要使用cmath库来计算指数函数和平方根
+class GaussianFilter : public Filter {
+public:
+    GaussianFilter(int width, int height, float sigma);
 };
