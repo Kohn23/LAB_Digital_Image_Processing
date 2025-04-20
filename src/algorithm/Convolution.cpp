@@ -46,11 +46,11 @@ void ConvolChannels::operator()(
     static std::vector<unsigned char> convolvedBuffer;
 
     // 处理每个通道
-    for (int channel = 0; channel < 3; ++channel) {
-        // 提取单个通道数据（示例：假设 RGB 交错存储）
+    for (int channel = 0; channel < channels; ++channel) {
+        // 提取单个通道数据
         std::vector<unsigned char> channelData;
         channelData.reserve(width * height);
-        for (size_t i = channel; i < imageData.size(); i += 3) {
+        for (size_t i = channel; i < imageData.size(); i += channels) {
             channelData.push_back(imageData[i]);
         }
 
@@ -61,7 +61,7 @@ void ConvolChannels::operator()(
         convol2d(paddedBuffer, convolvedBuffer, width + 2*(kernelWidth/2), height + 2*(kernelHeight/2), filter);
 
         // 将结果写回原图像数据
-        for (size_t i = 0, idx = channel; i < convolvedBuffer.size(); ++i, idx += 3) {
+        for (size_t i = 0, idx = channel; i < convolvedBuffer.size(); ++i, idx += channels) {
             imageData[idx] = convolvedBuffer[i];
         }
     }

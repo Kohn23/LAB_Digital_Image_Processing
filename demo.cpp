@@ -4,9 +4,9 @@ int main() {
     try
     {
         Image* bmp = new BMP();
-        bmp->readImage("img/exp3_smoothing.bmp");       // 读取图像
-        bmp->processImage(new GaussianSmoothing()); // 处理图像
-        bmp->saveImage("img/exp3_gaussian_smoothing.bmp");  // 保存图像
+        bmp->readImage("img/exp1_colored.bmp");
+        bmp->processImage(new GrayScale());
+        bmp->saveImage("img/new_read_test.bmp");
     }
     catch(const std::exception& e)
     {

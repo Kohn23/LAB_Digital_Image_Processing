@@ -39,3 +39,14 @@ class GaussianFilter : public Filter {
 public:
     GaussianFilter(int width, int height, float sigma);
 };
+
+// 拉普拉斯滤波器
+class LaplacianFilter : public Filter {
+public:
+    LaplacianFilter(int width=3, int height=3) : Filter(width, height) {
+        // 初始化滤波核
+        kernel = {
+            -1, -1, -1, -1, 8, -1, -1, -1, -1
+        };
+    }
+};

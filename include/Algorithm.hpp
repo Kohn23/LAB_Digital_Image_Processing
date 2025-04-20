@@ -5,6 +5,7 @@
 #include "ImageState.hpp"
 #include "Filter.hpp"
 
+
 // 算法接口
 class Algorithm {
 public:
@@ -72,6 +73,26 @@ public:
     void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
 
     const char* getName() const override { return "GaussianSmoothing";}
+    ImageState getInputState() const override { return ImageState::ANY; }
+    ImageState getOutputState() const override { return ImageState::ANY; }
+};
+
+// 中间值测试
+class Test : public Algorithm {
+public:
+    void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
+
+    const char* getName() const override { return "MedianSmoothing";}
+    ImageState getInputState() const override { return ImageState::ANY; }
+    ImageState getOutputState() const override { return ImageState::ANY; }
+};
+
+// 普拉斯锐化
+class LaplacianSharpening : public Algorithm {
+public:
+    void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
+
+    const char* getName() const override { return "LaplacianSharpening";}
     ImageState getInputState() const override { return ImageState::ANY; }
     ImageState getOutputState() const override { return ImageState::ANY; }
 };
