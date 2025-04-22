@@ -1,5 +1,6 @@
 #include "Algorithm.hpp"
 
+// Abandoned：在锐化的代码中会引入一些未知错误
 void Padding::operator()(
     const std::vector<unsigned char>& inputPlane,
     std::vector<unsigned char>& outputPlane, // 输出通过引用传递

@@ -52,3 +52,29 @@ public:
         };
     }
 };
+
+// 垂直索伯滤波器
+class SobelFilterV : public Filter {
+public:
+    SobelFilterV(int width=3, int height=3) : Filter(width, height) {
+        // 初始化滤波核
+        kernel = {
+            -1.0, 0.0, 1.0,
+            -2.0, 0.0, 2.0,
+            -1.0, 0.0, 1.0
+        };
+    }
+};
+
+// 水平索伯滤波器
+class SobelFilterH : public Filter {
+public:
+    SobelFilterH(int width=3, int height=3) : Filter(width, height) {
+        // 初始化滤波核
+        kernel = {
+            -1.0, -2.0, -1.0,
+            0.0, 0.0, 0.0,
+            1.0, 2.0, 1.0
+        };
+    }
+};

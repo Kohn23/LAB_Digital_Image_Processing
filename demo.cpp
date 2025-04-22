@@ -6,8 +6,8 @@ int main() {
         Image* bmp = new BMP();
         bmp->readImage("img/exp3_sharpening.bmp");
         bmp->processImage(new GrayScale());
-        bmp->processImage(new LaplacianSharpening());
-        bmp->saveImage("img/exp3_myLaplacian.bmp");
+        bmp->processImage(new SobelSharpening());
+        bmp->saveImage("img/exp3_mySobel3.bmp");
     }
     catch(const std::exception& e)
     {

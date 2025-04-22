@@ -47,7 +47,7 @@ public:
 };
 
 // 卷积
-class Convol2d{
+class Conv2d{
 public:
     void operator()(const std::vector<unsigned char>& inputPlane, std::vector<unsigned char>& outputPlane, size_t inputWidth, size_t inputHeight, Filter& filter);
 };
@@ -93,6 +93,16 @@ public:
     void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
 
     const char* getName() const override { return "LaplacianSharpening";}
+    ImageState getInputState() const override { return ImageState::ANY; }
+    ImageState getOutputState() const override { return ImageState::ANY; }
+};
+
+// 索伯锐化
+class SobelSharpening : public Algorithm {
+public:
+    void operator()(std::vector<unsigned char>& imageData, size_t width, size_t height) override;
+
+    const char* getName() const override { return "SobelSharpening";}
     ImageState getInputState() const override { return ImageState::ANY; }
     ImageState getOutputState() const override { return ImageState::ANY; }
 };

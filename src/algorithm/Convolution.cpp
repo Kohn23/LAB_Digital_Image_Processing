@@ -1,6 +1,6 @@
 #include "Algorithm.hpp"
 
-void Convol2d::operator()(
+void Conv2d::operator()(
     const std::vector<unsigned char>& inputPlane,
     std::vector<unsigned char>& outputPlane, // 输出通过引用传递
     size_t inputWidth,
@@ -35,7 +35,7 @@ void ConvolChannels::operator()(
     int channels,
     Filter& filter
 ) {
-    Convol2d convol2d;
+    Conv2d conv2d;
 
     // 共享的中间缓冲区（填充和卷积复用）
     // 注意多线程环境下可能需要线程安全的实现
@@ -51,7 +51,7 @@ void ConvolChannels::operator()(
         }
 
         // 卷积操作
-        convol2d(channelData, convolvedBuffer, width, height, filter);
+        conv2d(channelData, convolvedBuffer, width, height, filter);
 
         // 将结果写回原图像数据
         for (size_t i = 0, idx = channel; i < convolvedBuffer.size(); ++i, idx += channels) {
